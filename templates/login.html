@@ -1,0 +1,204 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+  body {
+  background: url("{{ url_for('static', filename='images/restaurant.jpg') }}") center/cover no-repeat fixed;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fffbe6;
+  margin: 0;
+  padding: 0;
+}
+
+
+  header {
+    background: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #d4af37;
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+  }
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 120px;
+    padding: 0 20px;
+  }
+
+   .logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  nav a:hover {
+    background: rgba(255, 223, 0, 0.2);
+    color: #ffd700;
+    transform: translateY(-2px);
+  }
+
+  nav a.active {
+    background: linear-gradient(45deg, #f1c40f, #ffd700);
+    color: #2c1810;
+    font-weight: bold;
+  }
+
+  .login-container {
+    margin: 150px auto 60px;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+    animation: glow 1.5s ease-in-out;
+  }
+
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+    }
+    100% {
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+  }
+
+  form div {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ffe680;
+    font-weight: 600;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ffd700;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fffbe6;
+    font-size: 1rem;
+    backdrop-filter: blur(3px);
+  }
+
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  input[type="submit"] {
+    background: linear-gradient(135deg, #ffd700, #f1c40f);
+    color: #2c1810;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 1rem;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  }
+
+  input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+  }
+
+  input[type="checkbox"] {
+    margin-right: 8px;
+  }
+
+  .remember-label {
+    display: flex;
+    align-items: center;
+    color: #fffbe6;
+  }
+
+  @media (max-width: 600px) {
+    .login-container {
+      margin: 120px 20px;
+      padding: 30px 20px;
+    }
+
+    .header-content {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+  }
+</style>
+
+<header>
+  <div class="container">
+    <div class="header-content">
+      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="SAVORY  Restaurant Logo" class="logo">
+      <nav>
+        <a href="/home">Home</a>
+        <a href="/menu">Menu</a>
+        <a href="/about">About</a>
+        <a href="/contact" class="active">Contact</a>
+        <a href="/reserve">Reservation</a>
+        <a href="/signup">Sign Up</a>
+        <a href="/login">Login</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="login-container">
+  <form action="" method="post">
+    {{ form.hidden_tag() }}
+
+    <div>
+      {{ form.email.label }}
+      {{ form.email(class="form-control") }}
+    </div>
+
+    <div>
+      {{ form.password.label }}
+      {{ form.password(class="form-control") }}
+    </div>
+
+    <div class="remember-label">
+      {{ form.remember() }} {{ form.remember.label }}
+    </div>
+
+    <div>
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+  </form>
+</div>
+{% endblock content %}

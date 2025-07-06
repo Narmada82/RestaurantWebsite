@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservation - SAVORY Restaurant</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: url('{{ url_for("static", filename="images/reserve.jpg") }}') center/cover no-repeat fixed;
+      color: #fffbe6;
+      min-height: 100vh;
+      padding-top: 120px;
+    }
+
+  header {
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #d4af37;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 120px;
+      padding: 0 20px;
+    }
+
+     .logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(1, 54, 87, 0.6);
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 223, 0, 0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    nav a:hover::before {
+      left: 100%;
+    }
+
+    nav a:hover {
+      background: rgba(255, 223, 0, 0.2);
+      color: #ffd700;
+      transform: translateY(-2px);
+    }
+
+    nav a.active {
+      background: linear-gradient(45deg, #f1c40f, #ffd700);
+      color: #2c1810;
+      font-weight: bold;
+    }
+
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 20px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+    }
+    h2 {
+      font-size: 3rem;
+      color: #ffd700;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.6);
+    }
+
+   form {
+  background: rgba(0, 0, 0, 0.7);
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  animation: glow-on-load 1.8s ease-in-out;
+}
+
+/* Add hover glow effect */
+form:hover {
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+  transform: scale(1.01);
+  transition: all 0.3s ease-in-out;
+}
+
+@keyframes glow-on-load {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+    transform: scale(1);
+  }
+}
+
+
+    label {
+      font-size: 1rem;
+      color: #ffe680;
+      margin-bottom: 5px;
+      display: block;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #ffd700;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fffbe6;
+      font-size: 1rem;
+      backdrop-filter: blur(3px);
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    input[type="submit"] {
+      background-color: #ffd700;
+      color: #2c1810;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #f1c40f;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3);
+    }
+
+    .flash {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #fffdd0;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ffe680;
+      border-radius: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 30px 20px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+        padding: 10px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+      }
+    }
+    
+
+
+.glow-load {
+  animation: glow-on-load 1.5s ease-in-out;
+}
+
+
+  </style>
+</head>
+<body>
+
+
+
+<header>
+  <div class="header-content">
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="logo">
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/menu">Menu</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/reserve" class="active">Reservation</a>
+      <a href="/signup">Sign Up</a>
+      <a href="/login">Login</a>
+    </nav>
+  </div>
+</header>
+
+<h2>Reserve Your Table</h2>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<form method="POST" class="glow-load">
+  <label for="name">Your Name:</label>
+  <input type="text" id="name" name="name" required >
+
+  <label for="date">Select Date</label>
+  <input type="date" id="date" name="date" required>
+
+  <label for="time">Select Time</label>
+  <input type="time" id="time" name="time" required>
+
+  <label for="table">Choose Number Of People:</label>
+  <select name="table" style="background-color: #000; color: #ffd700;">
+  {% for i in range(1, 11) %}
+    <option value="{{ i }}" style="background-color: #000; color: #ffd700;">{{ i }}</option>
+  {% endfor %}
+</select>
+
+
+  <input type="submit" value="Reserve Table">
+</form>
+
+</body>
+</html>

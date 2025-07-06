@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chef's Special</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url("{{ url_for('static', filename='images/chef.jpg') }}");
+      background-size: cover;
+      font-family: 'Georgia', serif;
+      color: #fff8b5;
+      text-shadow: 0 0 5px #fff176, 0 0 10px #ffd54f, 0 0 15px #ffeb3b;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #d4af37;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 120px;
+      padding: 0 20px;
+    }
+
+     .logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      background: rgba(255, 223, 0, 0.2);
+      color: #ffd700;
+      transform: translateY(-2px);
+    }
+
+    nav a.active {
+      background: linear-gradient(45deg, #f1c40f, #ffd700);
+      color: #2c1810;
+      font-weight: bold;
+    }
+
+    p {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      margin: 120px auto 2rem;
+      max-width: 700px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 235, 59, 0.5);
+    }
+
+    .section-title {
+      font-size: 2rem;
+      text-align: center;
+      display: block;
+      margin-bottom: 20px;
+      color: #ffef9f;
+      text-shadow: 0 0 5px #ffe066, 0 0 10px #ffd700;
+    }
+
+    .item-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff8dc;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .item-desc {
+      color: #fffacd;
+      text-shadow: 0 0 4px #ffeb3b, 0 0 10px #fff176;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    ::selection {
+      background: #ffeb3b;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="SAVORY Restaurant Logo" class="logo">
+        <nav>
+          <a href="/home">Home</a>
+          <a href="/menu">Menu</a>
+          <a href="/about">About</a>
+          <a href="/contact" class="active">Contact</a>
+          <a href="/reserve">Reservation</a>
+          <a href="/signup">Sign Up</a>
+          <a href="/login">Login</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <p>
+    <strong class="section-title">Appetizers</strong><br><br>
+
+    <strong class="item-name">smashed cucumbers</strong> – $6.50<br>
+    <span class="item-desc">persian cucumbers, sichuan peppercorn, pickled fresnos, toasted sesame, rice wine vinegar and fresh herbs</span><br>
+
+    <strong class="item-name">egg roll with pork & shrimp</strong> – $10.50<br>
+    <span class="item-desc">crunchy wrapper stuffed with pork, shrimp, glass noodles, cabbage and carrots (G, SH)</span><br>
+
+    <strong class="item-name">vegetable spring roll</strong> – $9.50<br>
+    <span class="item-desc">thin crispy wrapper, filled with mushrooms, carrots, scallion and tofu (G)</span><br>
+
+    <strong class="item-name">crab rangoon</strong> – $10.50<br>
+    <span class="item-desc">fried wonton wrapper stuffed with cream cheese and crab (G, FF, SH, D)</span><br>
+
+    <strong class="item-name">wontons in chili oil</strong> – $14.50<br>
+    <span class="item-desc">thin noodle-like wrapper filled with ground pork, ginger, garlic chives, Thai chili and black vinegar (G)</span><br>
+
+    <strong class="item-name">potstickers</strong> – $13.50<br>
+    <span class="item-desc">thicker dough stuffed with pork and cabbage, served with a tamari-fresno dipping sauce. (G)</span>
+  </p>
+</body>
+</html>

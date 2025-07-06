@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAVORY Restaurant - Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.6); /* Dark overlay as fallback */
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.6; /* Optional: subtle video */
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+   header {
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #d4af37;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 120px;
+      padding: 0 20px;
+    }
+
+     .logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 223, 0, 0.6);
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 223, 0, 0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    nav a:hover::before {
+      left: 100%;
+    }
+
+    nav a:hover {
+      background: rgba(255, 223, 0, 0.2);
+      color: #ffd700;
+      transform: translateY(-2px);
+    }
+
+    nav a.active {
+      background: linear-gradient(45deg, #f1c40f, #ffd700);
+      color: #2c1810;
+      font-weight: bold;
+    }
+
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 20px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+    }
+
+
+    main {
+      margin-top: 100px;
+      padding: 4rem 0;
+    }
+
+    .hero-section {
+      text-align: center;
+      color: #fff;
+      padding: 4rem 0;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+      background: linear-gradient(135deg, #ffcc25, #f7d92f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 5px #d4af37); }
+      to { filter: drop-shadow(0 0 20px #ffd700); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: #f0f0f0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-description {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      color: #e0e0e0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+      line-height: 1.8;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: #000;
+      background: linear-gradient(135deg, #d4af37, #ffd700);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .cta-button:hover::before {
+      left: 100%;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 35px rgba(212, 175, 55, 0.5);
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .feature-card {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      border: 2px solid #d4af37;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+      border-color: #ffd700;
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      color: #d4af37;
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .feature-description {
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 4rem;
+      border-top: 2px solid #d4af37;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-button {
+        width: 80%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="{{ url_for('static', filename='videos/bg.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="SAVORY Restaurant Logo" class="logo">
+        <nav>
+          <a href="/home">Home</a>
+          <a href="/menu">Menu</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+          <a href="/reserve">Reservation</a>
+          <a href="/signup">Sign Up</a>
+          <a href="/login">Login</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <div id="flash-message">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; margin: 20px 0;">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <section class="hero-section">
+        <h1 class="hero-title">SAVORY Restaurant</h1>
+        <p class="hero-subtitle">A Table Worth Taking About</p>
+        <p class="hero-description">
+          Welcome to SAVORY, the ultimate dining destination where innovation meets culinary excellence. 
+          Our restaurant combines the spirit of technology with traditional flavors, creating an unforgettable 
+          dining experience. From our chef's special creations to our daily fresh menu, every dish is crafted 
+          with passion and precision. Join us for a meal that's not just food, but a celebration of flavors 
+          that will leave you craving for more.
+        </p>
+
+        <div class="cta-buttons">
+          <a href="/chief" class="cta-button">🍽️ Chef's Special</a>
+          <a href="/menu" class="cta-button">📋 Today's Menu</a>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="feature-card">
+          <div class="feature-icon">👨‍🍳</div>
+          <h3 class="feature-title">Expert Chefs</h3>
+          <p class="feature-description">
+            Our experienced chefs bring years of culinary expertise, creating dishes that blend traditional 
+            recipes with modern techniques for an extraordinary dining experience.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🌟</div>
+          <h3 class="feature-title">Fresh Ingredients</h3>
+          <p class="feature-description">
+            We source only the finest, freshest ingredients daily to ensure every dish maintains the highest 
+            quality and delivers exceptional taste in every bite.
+          </p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💡</div>
+          <h3 class="feature-title">Tech-Savvy Dining</h3>
+          <p class="feature-description">
+            Experience dining in the digital age with our innovative ordering system and tech-enhanced 
+            atmosphere that makes B-Tech Adda a unique restaurant experience.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 SAVORY Restaurant. All rights reserved. | Taste the Future of Dining</p>
+    </div>
+  </footer>
+
+  
+  <script>
+    setTimeout(function () {
+      const flash = document.getElementById('flash-message');
+      if (flash) {
+        flash.style.display = 'none';
+      }
+    }, 3000); 
+  </script>
+</body>
+</html>

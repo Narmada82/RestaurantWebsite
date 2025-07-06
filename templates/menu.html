@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAVORY - Food Menu</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, rgba(20,20,30,0.95), rgba(30,30,45,0.9)), 
+                  url('https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=1200&h=800&fit=crop') center/cover fixed;
+      color: #e8e8f0;
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #d4af37;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 120px;
+      padding: 0 20px;
+    }
+
+    .logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(1, 54, 87, 0.6);
+    }
+
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 223, 0, 0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    nav a:hover::before {
+      left: 100%;
+    }
+
+    nav a:hover {
+      background: rgba(255, 223, 0, 0.2);
+      color: #ffd700;
+      transform: translateY(-2px);
+    }
+
+    nav a.active {
+      background: linear-gradient(45deg, #f1c40f, #ffd700);
+      color: #2c1810;
+      font-weight: bold;
+    }
+
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 20px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+    }
+
+    .main-title {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 3px 3px 6px rgba(0,0,0,0.7), 0 0 12px rgba(255, 215, 0, 0.7);
+      margin-bottom: 10px;
+      letter-spacing: 3px;
+    }
+
+    .section {
+      background: rgba(25, 25, 40, 0.85);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(100, 100, 120, 0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: #f1c40f;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7), 0 0 10px rgba(255, 223, 0, 0.6);
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, #f39c12, #f1c40f);
+      border-radius: 2px;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      padding: 20px;
+      background: rgba(35, 35, 20, 0.6);
+      border-radius: 15px;
+      border-left: 4px solid #ffd700;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .menu-item:hover {
+      background: rgba(45, 45, 25, 0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 223, 0, 0.3);
+    }
+
+    .item-details {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .item-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff8dc;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .item-description {
+      color: #e8dcb8;
+      font-size: 1rem;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .item-tags {
+      font-size: 0.85rem;
+      color: #e1c542;
+      font-style: italic;
+    }
+
+    .item-price {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5), 0 0 6px rgba(255, 215, 0, 0.6);
+      min-width: 80px;
+      text-align: right;
+    }
+    .drink-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      padding: 20px;
+      background: rgba(35, 35, 20, 0.6);
+      border-radius: 15px;
+      border-left: 4px solid #ffd700;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .drink-item:hover {
+      background: rgba(45, 45, 25, 0.85);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 223, 0, 0.3);
+    }
+
+
+     .drink-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff8dc;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .drink-description {
+      color: #e8dcb8;
+      font-size: 1rem;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .drink-price {
+      color: #f1c40f;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+        padding: 10px 20px;
+      }
+
+      nav {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .main-title {
+        font-size: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .menu-item {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .item-details {
+        padding-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .item-price {
+        text-align: center;
+      }
+
+      .page-container {
+        padding-top: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<video autoplay muted loop playsinline id="bg-video" style="position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%; object-fit: cover; z-index: -1; opacity: 0.25;">
+  <source src="{{ url_for('static', filename='videos/menu.mp4') }}" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<header>
+  <div class="header-content">
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="logo">
+    <nav>
+      <a href="/home" class="nav-link">Home</a>
+      <a href="/menu" class="nav-link active">Menu</a>
+      <a href="/about" class="nav-link">About</a>
+      <a href="/contact" class="nav-link">Contact</a>
+      <a href="/reserve" class="nav-link">Reservation</a>
+      <a href="/signup" class="nav-link">Sign Up</a>
+      <a href="/login" class="nav-link">Login</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-container">
+  <div class="header">
+    <h1 class="main-title">FOOD MENU</h1>
+  </div>
+<div class="section">
+            <h2 class="section-title">BREAKFAST</h2>
+            
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">THE OG BREAKFAST*</div>
+                    <div class="item-description">Two Eggs, Breakfast Potatoes | Choice: Sausage, Bacon, Avocado</div>
+                    <div class="item-tags">gluten free, vegetarian</div>
+                </div>
+                <div class="item-price">$15</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">MUSHROOM FRITTATA</div>
+                    <div class="item-description">Mushroom, Arugula, Tomato, Onion, Garlic, Swiss, Kale Salad, Green Goddess</div>
+                    <div class="item-tags">gluten free, vegetarian</div>
+                </div>
+                <div class="item-price">$18</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">TOFU SCRAMBLE</div>
+                    <div class="item-description">Crumbled Tofu, Sweet Potatoes, Peppers, Onions, Roasted Corn, Arugula</div>
+                    <div class="item-tags">gluten free, vegan</div>
+                </div>
+                <div class="item-price">$17</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">SHORT RIB BENEDICT</div>
+                    <div class="item-description">Shredded Beef, Poached Eggs, Hollandaise, Chimichurri, English Muffin, Potatoes</div>
+                </div>
+                <div class="item-price">$18</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">CLASSIC HAM BENEDICT*</div>
+                    <div class="item-description">Smoked Ham, Poached Eggs, Hollandaise, English Muffin, Potatoes</div>
+                    <div class="item-tags">egg, wheat</div>
+                </div>
+                <div class="item-price">$17</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">SNACKS</h2>
+            <p class="section-subtitle">All sandwiches come with a choice of: crinkle-cut fries, breakfast potatoes, side salad, or fruit cup</p>
+            
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">HANGOVER BURGER*</div>
+                    <div class="item-description">Single 5oz Patty, Caramelized Onions, Pickles, Bacon, American Cheese, Over EZ Egg, Spicy Aioli, Potato Bun</div>
+                </div>
+                <div class="item-price">$17</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">BACON, EGG & CHEESE*</div>
+                    <div class="item-description">Bacon, Fried Egg, Cheese, Spicy Ketchup, Hashbrown Patty, Everything Bagel</div>
+                </div>
+                <div class="item-price">$15</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">BUFFALO CHICKEN SANDWICH</div>
+                    <div class="item-description">Fried Chicken, Bacon, Buffalo Sauce, Blue Cheese, Tomato, Potato Bun</div>
+                </div>
+                <div class="item-price">$17</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">B.L.A.S.T. CLUB SANDWICH</div>
+                    <div class="item-description">Bacon, Lettuce, Avocado, Swiss, Turkey, Ham, Tomato, Garlic Aioli, Toasted White Bread</div>
+                </div>
+                <div class="item-price">$16</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">MUSHROOM SWISS BURGER*</div>
+                    <div class="item-description">Single 5oz Patty, Roasted Mushrooms, Swiss, Garlic Aioli, Potato Bun</div>
+                </div>
+                <div class="item-price">$18</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">TURKEY PESTO PANINI</div>
+                    <div class="item-description">Turkey Breast, Bacon, Basil Pesto, Sun-Dried Tomatoes, Garlic Aioli, Pressed Baguette</div>
+                </div>
+                <div class="item-price">$17</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">CAPRESE PANINI</div>
+                    <div class="item-description">Tomato, Mozzarella, Basil Pesto, Arugula, Balsamic Vinaigrette, Pressed Baguette</div>
+                </div>
+                <div class="item-price">$16</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">SALADS</h2>
+            
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">TOSSED COBB</div>
+                    <div class="item-description">Mixed Greens, Bacon, Hard-Boiled Egg, Tomato, Cucumber, Blue Cheese, Pickled Onion, Ranch Dressing</div>
+                    <div class="item-tags">gluten free</div>
+                </div>
+                <div class="item-price">$16</div>
+            </div>
+
+            <div class="menu-item">
+                <div class="item-details">
+                    <div class="item-name">KALE CAESAR</div>
+                    <div class="item-description">Mixed Greens, House Garlic-Croutons, Toasted Pine Nuts, Parmesan Cheese, Caesar Dressing</div>
+                    <div class="item-tags">vegetarian</div>
+                </div>
+                <div class="item-price">$17</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">DRINKS</h2>
+            <h3 class="section-subtitle">SPIRIT FREE BEVERAGES</h3>
+            
+            
+                <div class="drink-item">
+                  <div class="item-details">
+                    <div class="drink-name">BUBBLE W/OUT THE TROUBLE</div>
+                    <div class="drink-description">Grüvi Dry Secco (spirit free) Choice of: Orange, Grapefruit, Cranberry</div>
+                  </div>
+                    <div class="drink-price">$11</div>
+                </div>
+
+                <div class="drink-item">
+                  <div class="item-details">
+                    <div class="drink-name">PRODUCTIVE SUNDAY</div>
+                    <div class="drink-description">Seedlip Garden 108 (spirit free), OG Bloody Mix, Lemon, Celery, Salt Rim</div>
+                  </div>
+              
+                    <div class="drink-price">$12</div>
+                </div>
+
+                <div class="drink-item">
+                  <div class="item-details">
+                    <div class="drink-name">MINT CONDITION</div>
+                    <div class="drink-description">Seedlip Grove 42, Blackberry, Pineapple, Lime, Mint, Lemon-Lime Soda</div>
+                  </div>
+                    <div class="drink-price">$12</div>
+                </div>
+
+                <div class="drink-item">
+                  <div class="item-details">
+                    <div class="drink-name">THE SWEET ESCAPE</div>
+                    <div class="drink-description">Seedlip Grove 42, Passionfruit, Pineapple, Strawberry, Lemon, Soda Water</div>
+                  </div>
+                    <div class="drink-price">$12</div>
+                </div>
+
+                <div class="drink-item">
+                  <div class="item-details">
+                    <div class="drink-name">OG MILKSHAKE</div>
+                    <div class="drink-description">Vanilla, Chocolate, or Caramel</div>
+                    </div>
+                    <div class="drink-price">$8</div>
+                </div>
+
+                <div class="drink-item">
+                  <div class="item-details">
+                    <div class="drink-name">RED BULL</div>
+                    <div class="drink-description">Energy Drink, Sugarfree, Red Edition (Watermelon)</div>
+                  </div>
+                    <div class="drink-price">$4</div>
+                </div>
+            
+        </div>
+</div>
+
+</body>
+</html>
