@@ -1,80 +1,95 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
-from sqlalchemy import create_engine, text
+from flask import Flask, render_template, redirect, url_for, flash, request
+from forms import LoginForm, SignupForm
+from flask_sqlalchemy import SQLAlchemy # type: ignore
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'
 
-# Database connection
-DATABASE_URL = "postgresql+psycopg2://neondb_owner:npg_OFgDGMz0L8QE@ep-curly-glitter-a84a9h5j-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require"
-engine = create_engine(DATABASE_URL)
 
-@app.route('/')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://neondb_owner:npg_OFgDGMz0L8QE@ep-curly-glitter-a84a9h5j-pooler.eastus2.azure.neon.tech/neondb?sslmode=require&channel_binding=require'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SECRET_KEY"] = "1q2w3e4r5t6y"
+
+
+db = SQLAlchemy(app)
+
+
+class Contact(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    email = db.Column(db.String(100))
+    message = db.Column(db.Text)
+
+
+with app.app_context():
+    db.create_all()
+
+@app.route("/")
+@app.route("/home")
 def home():
-    return render_template('home.html')
+    return render_template("home.html")
 
-@app.route('/about')
+@app.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template("about.html")
 
-@app.route('/projects')
-def projects():
-    # Static sample projects (if no DB needed)
-    projects_data = [
-        {
-            'title': 'Task Management System',
-            'description': 'A web-based task manager with user authentication and real-time updates.',
-            'tech_stack': ['Python', 'Flask', 'SQLite', 'HTML/CSS', 'JavaScript'],
-            'github': 'https://github.com/Narmada82/task-manager',
-            'demo': '#'
-        },
-        {
-            'title': 'Weather Forecast App',
-            'description': 'Real-time weather application using OpenWeatherMap API with location detection.',
-            'tech_stack': ['JavaScript', 'HTML/CSS', 'REST API', 'Bootstrap'],
-            'github': 'https://github.com/narmada/weather-app',
-            'demo': '#'
-        },
-        {
-            'title': 'Student Grade Calculator',
-            'description': 'Desktop application for calculating CGPA and semester grades with data visualization.',
-            'tech_stack': ['Python', 'Tkinter', 'Matplotlib', 'Pandas'],
-            'github': 'https://github.com/narmada/grade-calculator',
-            'demo': '#'
-        },
-        {
-            'title': 'E-commerce Landing Page',
-            'description': 'Responsive e-commerce template with modern design and mobile optimization.',
-            'tech_stack': ['HTML', 'CSS', 'JavaScript', 'Bootstrap'],
-            'github': 'https://github.com/narmada/ecommerce-template',
-            'demo': '#'
-        }
-    ]
-    return render_template('projects.html', projects=projects_data)
+@app.route("/chief")
+def chef():
+    return render_template("chef.html")
 
-@app.route('/db-projects')
-def db_projects():
-    # Example fetching projects from a database table named 'projects'
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT title, description FROM projects"))
-        projects = [{'title': row.title, 'description': row.description} for row in result]
-    return render_template('projects.html', projects=projects)
-
-@app.route('/contact', methods=['GET', 'POST'])
+@app.route("/contact", methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
 
-        # Example of inserting into a table called 'messages' (make sure it exists)
-        with engine.connect() as connection:
-            insert_stmt = text("INSERT INTO messages (name, email, message) VALUES (:name, :email, :message)")
-            connection.execute(insert_stmt, {"name": name, "email": email, "message": message})
+        new_msg = Contact(name=name, email=email, message=message)
+        db.session.add(new_msg)
+        db.session.commit()
 
-        flash(f'Thank you {name}! Your message has been sent successfully.', 'success')
-        return redirect(url_for('contact'))
+        flash("Message sent successfully!")
+        return redirect(url_for("home"))
 
-    return render_template('contact.html')
+    return render_template("contact.html")
 
-if __name__ == '__main__':
+@app.route("/reserve", methods=['GET', 'POST'])
+def reserve():
+    if request.method == 'POST':
+        name = request.form['name']
+        date= request.form['date']
+        time=request.form['time']
+        table = request.form['table']
+        flash(f'Dear {name} A Table Is Booked On {date} At {time} For {table} Persons')
+        return redirect(url_for('home'))
+    return render_template('reserve.html')
+
+@app.route("/menu")
+def menu():
+    return render_template("menu.html")
+
+@app.route("/location")
+def location():
+    return render_template("location.html")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    email = form.email.data
+    pw = form.password.data
+    if form.validate_on_submit():
+        flash("Login Successfully !")
+        return redirect(url_for("home"))
+    return render_template("login.html", title="LOGIN", form=form)
+
+@app.route("/signup", methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        flash(f"Successfully Registered {form.username.data}")
+        return redirect(url_for("home"))
+    return render_template("signup.html", title="SIGNUP", form=form)
+
+
+if __name__ == "__main__":
     app.run(debug=True)
